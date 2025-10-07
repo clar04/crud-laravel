@@ -11,3 +11,7 @@ npm install
 npm run build
 ```
 
+## run
+```
+php artisan serve
+```
