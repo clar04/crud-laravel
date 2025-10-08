@@ -8,7 +8,16 @@ use Illuminate\Http\Request;
 
 class ContentController extends Controller
 {
-    public function index(){ $contents=Content::latest()->paginate(10); return view('admin.contents.index',compact('contents')); }
+    public function index(\Illuminate\Http\Request $r)
+{
+    $q = $r->string('q')->toString();
+    $contents = \App\Models\Content::when($q, fn($w) =>
+        $w->where('title','like',"%$q%")->orWhere('body','like',"%$q%")
+    )->latest()->paginate(10)->withQueryString();
+
+    return view('admin.contents.index', compact('contents','q'));
+}
+
     public function create(){ return view('admin.contents.create'); }
     public function store(Request $r){
         $d=$r->validate(['title'=>'required|max:255','body'=>'nullable','published'=>'boolean']);

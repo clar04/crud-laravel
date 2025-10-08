@@ -2,6 +2,11 @@
   <div class="max-w-3xl mx-auto py-8">
     <h1 class="text-2xl font-bold mb-4">Daftar Konten</h1>
 
+    <form method="GET" class="mb-4">
+      <input type="text" name="q" value="{{ $q ?? '' }}" placeholder="Search..."
+             class="border rounded p-2 w-full">
+    </form>
+
     <div class="space-y-4">
       @forelse ($contents as $c)
         <a href="{{ route('public.show', $c) }}" class="block p-4 border rounded hover:bg-gray-50">

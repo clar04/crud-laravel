@@ -4,9 +4,12 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Models\Content;
 
-Route::get('/', function () {
-    $contents = Content::where('published', true)->latest()->paginate(10);
-    return view('public.index', compact('contents'));
+Route::get('/', function (\Illuminate\Http\Request $r) {
+    $q = $r->string('q')->toString();
+    $contents = \App\Models\Content::where('published', true)
+        ->when($q, fn($w)=> $w->where('title','like',"%$q%")->orWhere('body','like',"%$q%"))
+        ->latest()->paginate(10)->withQueryString();
+    return view('public.index', compact('contents','q'));
 })->name('home');
 
 Route::get('/content/{content}', function (Content $content) {
@@ -34,12 +37,10 @@ Route::middleware(['auth','role:superadmin'])
     });
 
 Route::middleware('auth')->group(function () {
-    // Cukup redirect ke dashboard dulu (placeholder)
     Route::get('/profile', function () {
         return redirect()->route('dashboard');
     })->name('profile.edit');
 
-    // (Opsional) placeholder kalau layout memanggil ini juga
     Route::patch('/profile', function () {
         abort(501);
     })->name('profile.update');

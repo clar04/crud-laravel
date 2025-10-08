@@ -1,24 +1,9 @@
 <x-guest-layout>
   <div class="max-w-3xl mx-auto py-8">
-    <h1 class="text-2xl font-bold mb-4">Daftar Konten</h1>
-
-    <div class="space-y-4">
-      @forelse ($contents as $c)
-        <a href="{{ route('public.show', $c) }}" class="block p-4 border rounded hover:bg-gray-50">
-          <h2 class="font-semibold">{{ $c->title }}</h2>
-          <p class="text-sm text-gray-600">
-            {{ \Illuminate\Support\Str::limit($c->body, 140) }}
-          </p>
-        </a>
-      @empty
-        <p>Tidak ada konten.</p>
-      @endforelse
-    </div>
-
-    <div class="mt-6">{{ $contents->links() }}</div>
-
-    <div class="mt-8">
-      <a href="{{ route('login') }}" class="text-blue-600 underline">Login Admin</a>
+    <a href="{{ route('home') }}" class="text-sm underline text-gray-600">← Back</a>
+    <h1 class="text-3xl font-bold mt-2 mb-4">{{ $content->title }}</h1>
+    <div class="prose max-w-none">
+      {!! nl2br(e($content->body)) !!}
     </div>
   </div>
 </x-guest-layout>

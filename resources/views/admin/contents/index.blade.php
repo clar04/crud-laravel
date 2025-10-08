@@ -6,6 +6,11 @@
     </div>
   </x-slot>
 
+  <form method="GET" class="mt-4 mb-3">
+  <input type="text" name="q" value="{{ $q ?? '' }}" placeholder="Search title/body..."
+         class="border rounded p-2 w-full md:w-80">
+</form>
+
   <div class="max-w-5xl mx-auto p-6">
     @if(session('ok')) <div class="mb-4 text-green-700">{{ session('ok') }}</div> @endif
 

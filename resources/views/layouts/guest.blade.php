@@ -22,6 +22,23 @@
                 </a>
             </div>
 
+            <header class="border-b bg-white">
+  <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+    <a href="{{ route('home') }}" class="font-semibold">MySite</a>
+    <nav class="flex items-center gap-4">
+      <a href="{{ route('home') }}" class="text-sm">Home</a>
+      @auth
+        @if(auth()->user()->role === 'superadmin')
+          <a href="{{ route('superadmin.admins.index') }}" class="text-sm">Manage Admins</a>
+        @endif
+        <a href="{{ route('admin.contents.index') }}" class="text-sm">Manage Contents</a>
+      @else
+        <a href="{{ route('login') }}" class="text-sm">Login</a>
+      @endauth
+    </nav>
+  </div>
+</header>
+
             <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
                 {{ $slot }}
             </div>
