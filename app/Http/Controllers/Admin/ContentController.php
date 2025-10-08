@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Content;
+use App\Http\Requests\StoreContentRequest; 
+use App\Http\Requests\UpdateContentRequest;
 use Illuminate\Http\Request;
 
 class ContentController extends Controller
@@ -19,16 +21,23 @@ class ContentController extends Controller
 }
 
     public function create(){ return view('admin.contents.create'); }
-    public function store(Request $r){
-        $d=$r->validate(['title'=>'required|max:255','body'=>'nullable','published'=>'boolean']);
-        $d['published']=$r->boolean('published'); Content::create($d);
-        return redirect()->route('admin.contents.index')->with('ok','Konten dibuat.');
+    public function store(StoreContentRequest $request)
+    {
+        $validated = $request->validated();
+        $validated['published'] = $request->boolean('published');
+        Content::create($validated);
+        return redirect()->route('admin.contents.index')->with('ok','Konten berhasil dibuat.');
     }
+
     public function edit(Content $content){ return view('admin.contents.edit',compact('content')); }
-    public function update(Request $r, Content $content){
-        $d=$r->validate(['title'=>'required|max:255','body'=>'nullable','published'=>'boolean']);
-        $d['published']=$r->boolean('published'); $content->update($d);
-        return redirect()->route('admin.contents.index')->with('ok','Konten diupdate.');
+
+    public function update(UpdateContentRequest $request, Content $content)
+    {
+        $validated = $request->validated();
+        $validated['published'] = $request->boolean('published');
+        $content->update($validated);
+        return redirect()->route('admin.contents.index')->with('ok','Konten berhasil diupdate.');
     }
-    public function destroy(Content $content){ $content->delete(); return back()->with('ok','Konten dihapus.'); }
+    
+    public function destroy(Content $content){ $content->delete(); return back()->with('ok','Konten berhasil dihapus.'); }
 }

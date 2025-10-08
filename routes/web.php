@@ -18,11 +18,8 @@ Route::get('/content/{content}', function (Content $content) {
 })->name('public.show');
 
 Route::get('/dashboard', function () {
-    $u = auth()->user();
-    return $u?->role === 'superadmin'
-        ? redirect()->route('superadmin.admins.index')
-        : redirect()->route('admin.contents.index');
-})->middleware('auth')->name('dashboard');
+    return view('dashboard');
+})->middleware(['auth'])->name('dashboard');
 
 Route::middleware(['auth','role:admin,superadmin'])
     ->prefix('admin')->name('admin.')->group(function () {
@@ -37,18 +34,11 @@ Route::middleware(['auth','role:superadmin'])
     });
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', function () {
-        return redirect()->route('dashboard');
-    })->name('profile.edit');
-
-    Route::patch('/profile', function () {
-        abort(501);
-    })->name('profile.update');
-
-    Route::delete('/profile', function () {
-        abort(501); 
-    })->name('profile.destroy');
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
 Route::redirect('/register', '/login')->name('register');
 
 require __DIR__.'/auth.php';

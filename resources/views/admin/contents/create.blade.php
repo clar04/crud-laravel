@@ -5,12 +5,15 @@
       @csrf
       <div>
         <label class="block font-medium">Judul</label>
-        <input name="title" class="w-full border rounded p-2" required>
+        <input name="title" class="w-full border rounded p-2" value="{{ old('title') }}" required>
         @error('title')<div class="text-red-600 text-sm">{{ $message }}</div>@enderror
       </div>
+      
       <div>
-        <label class="block font-medium">Isi</label>
-        <textarea name="body" rows="6" class="w-full border rounded p-2"></textarea>
+        <label for="body" class="block font-medium">Isi</label>
+        <input id="body" type="hidden" name="body" value="{{ old('body') }}">
+        <trix-editor input="body" class="w-full border bg-white rounded p-2 min-h-[250px]"></trix-editor>
+        @error('body')<div class="text-red-600 text-sm">{{ $message }}</div>@enderror
       </div>
       <label class="inline-flex items-center gap-2">
         <input type="checkbox" name="published" value="1" checked>

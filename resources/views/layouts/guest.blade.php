@@ -7,41 +7,50 @@
 
         <title>{{ config('app.name', 'Laravel') }}</title>
 
-        <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-        <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="font-sans text-gray-900 antialiased">
-        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
-            <div>
-                <a href="/">
-                    <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
-                </a>
-            </div>
+    <body class="font-sans text-gray-900 antialiased bg-gray-50">
+        <div class="min-h-screen flex flex-col">
+            <header class="bg-white shadow-sm sticky top-0 z-10">
+                <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="flex justify-between items-center py-4">
+                        <div class="flex items-center">
+                            <a href="{{ route('home') }}">
+                                <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
+                            </a>
+                            <a href="{{ route('home') }}" class="ml-3 text-xl font-semibold text-gray-800">
+                                {{ config('app.name', 'MySite') }}
+                            </a>
+                        </div>
 
-            <header class="border-b bg-white">
-  <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-    <a href="{{ route('home') }}" class="font-semibold">MySite</a>
-    <nav class="flex items-center gap-4">
-      <a href="{{ route('home') }}" class="text-sm">Home</a>
-      @auth
-        @if(auth()->user()->role === 'superadmin')
-          <a href="{{ route('superadmin.admins.index') }}" class="text-sm">Manage Admins</a>
-        @endif
-        <a href="{{ route('admin.contents.index') }}" class="text-sm">Manage Contents</a>
-      @else
-        <a href="{{ route('login') }}" class="text-sm">Login</a>
-      @endauth
-    </nav>
-  </div>
-</header>
+                        <nav class="flex items-center space-x-6">
+                            <a href="{{ route('home') }}" class="text-gray-600 hover:text-gray-900 font-medium">Home</a>
+                            @auth
+                                <a href="{{ route('dashboard') }}" class="text-gray-600 hover:text-gray-900 font-medium">Dashboard</a>
+                            @else
+                                <a href="{{ route('login') }}" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg text-sm">
+                                    Login Admin
+                                </a>
+                            @endauth
+                        </nav>
+                    </div>
+                </div>
+            </header>
 
-            <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
-                {{ $slot }}
-            </div>
+            <main class="flex-grow">
+                <div class="w-full sm:max-w-5xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+                    {{ $slot }}
+                </div>
+            </main>
+
+            <footer class="bg-white border-t mt-auto">
+                <div class="max-w-5xl mx-auto py-6 px-4 sm:px-6 lg:px-8 text-center text-gray-500">
+                    <p>&copy; {{ date('Y') }} {{ config('app.name', 'MySite') }}. All Rights Reserved.</p>
+                </div>
+            </footer>
         </div>
     </body>
 </html>

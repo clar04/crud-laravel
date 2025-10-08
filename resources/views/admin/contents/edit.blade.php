@@ -9,8 +9,9 @@
         @error('title')<div class="text-red-600 text-sm">{{ $message }}</div>@enderror
       </div>
       <div>
-        <label class="block font-medium">Isi</label>
-        <textarea name="body" rows="6" class="w-full border rounded p-2">{{ old('body', $content->body) }}</textarea>
+        <label for="body" class="block font-medium">Isi</label>
+        <input id="body" type="hidden" name="body" value="{{ old('body', $content->body) }}">
+        <trix-editor input="body" class="w-full border bg-white rounded p-2 min-h-[250px]"></trix-editor>
       </div>
       <label class="inline-flex items-center gap-2">
         <input type="checkbox" name="published" value="1" {{ $content->published ? 'checked' : '' }}>
